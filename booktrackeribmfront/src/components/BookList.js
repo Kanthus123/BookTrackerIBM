@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from 'styled-components'
 import BookItem from './BookItem'
 
-const BookList = ({livrosList, setLivros, fresh, setFresh}) => {
+const BookList = ({livrosList, setLivrosList, fresh}) => {
 
     if(fresh) {
         return (
@@ -12,9 +12,7 @@ const BookList = ({livrosList, setLivros, fresh, setFresh}) => {
                         key={livro.id}
                         livro={livro} 
                         livrosList={livrosList} 
-                        setLivros={setLivros} 
-                        fresh={fresh} 
-                        setFresh={setFresh}
+                        setLivrosList={setLivrosList} 
                     />
                 )}
             </Wrapper>

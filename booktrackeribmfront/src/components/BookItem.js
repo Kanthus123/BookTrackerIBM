@@ -3,16 +3,14 @@ import React, { useState, useEffect } from "react";
 import BookApi from "../services/booktrackerapi"
 import styled from 'styled-components'
 
-const BookItem = ({livro, livrosList, setLivros}) => {
+const BookItem = ({livro, livrosList, setLivrosList}) => {
     const [modo,setModo] = useState(true);
 
     const handleDelete = (id) => {
         BookApi.deletar(id.toString())
         .then(response => {
-            // mudar setLivros para setLivrosList
-            setLivros(livrosList.filter(n => n.id !== id))
+            setLivrosList(livrosList.filter(n => n.id !== id))
             console.log(response)
-            // response.status === 200 ? alert("Livro removido com sucesso!!") : ""
         }).catch(error => {
             alert("Erro ao remover livro!")
         })
@@ -27,13 +25,10 @@ const BookItem = ({livro, livrosList, setLivros}) => {
         switch (status) {
             case 0: 
                 return "Quero Ler" 
-                break;
             case 1:
                 return "Lendo" 
-                break;
             case 2:
                 return "Lido" 
-                break;                
             default:
                 break;
         }
@@ -76,6 +71,15 @@ const Wrapper = styled.div`
 	cursor: pointer;
 
     > button {
+        height: 40px;
+        border-radius: 5px;
+        background-color: #2e2e2e;
+        color: #ffffff;
+        width: 120px;
+        border: 1px solid #ffffff;
+      }
+  `
+/* > button {
         background-color: #e7e7e7; 
         color: black;
         border: 10%;
@@ -86,8 +90,8 @@ const Wrapper = styled.div`
         text-decoration: none;
         display: inline-block;
         font-size: 16px;
-      }
-  `
+} */
+
 
 const Propriedade = styled.p`
     font-weight: 700;

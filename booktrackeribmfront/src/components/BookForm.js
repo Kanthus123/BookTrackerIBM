@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import BookApi from "../services/booktrackerapi"
 import styled from 'styled-components'
-import axios from 'axios'
 
 import BookRead from './BookRead'
 
-const BookForm = ({livrosList, setLivros, setFresh}) => {
+const BookForm = ({livrosList, setLivrosList}) => {
   const [ title, setTitle ] = useState('')
   const [ author, setAuthor ] = useState('')
   const [ status, setStatus ] = useState('0')
@@ -49,7 +48,7 @@ const BookForm = ({livrosList, setLivros, setFresh}) => {
     BookApi.create(Obj)
 		.then(response => {
       Obj.id = response.id
-      setLivros(livrosList.concat(Obj))
+      setLivrosList(livrosList.concat(Obj))
 			console.log(response)
 		})
     .catch(error => {
@@ -102,7 +101,7 @@ const Form = styled.form`
   justify-content: center;
 
   > span {
-
+    font-weight: 700;
   }
 
   > input {

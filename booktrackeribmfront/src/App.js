@@ -2,11 +2,12 @@ import React, {useState, useEffect } from "react";
 import styled from 'styled-components'
 import axios from 'axios'
 
+//Services
+import BookApi from "./services/booktrackerapi"
 
 //Components
 import BookForm from './components/BookForm'
 import BookList from './components/BookList'
-//import BookItem from './components/BookItem'
 
 function App() {
 	
@@ -21,15 +22,15 @@ function App() {
 	status: response.data.status
 	 */
 
-	const [livrosList, setLivros] = useState({})
+	const [livrosList, setLivrosList] = useState({})
     const [fresh,setFresh] = useState(false)
 
 	useEffect(() => {
         if (fresh === false){
-            axios.get('http://localhost:8000/api/booktrackerapi/')
+            BookApi.getAll()
             .then(response => {
-                console.log(response.data)
-                setLivros(response.data)
+                console.log(response)
+                setLivrosList(response)
                 setFresh(true);
             });
         }
@@ -38,8 +39,8 @@ function App() {
 
 	return (
 		<AppWrapper>
-			<BookForm livrosList={livrosList} setLivros={setLivros} setFresh={setFresh}/>
-			<BookList livrosList={livrosList} setLivros={setLivros} fresh={fresh} setFresh={setFresh} />
+			<BookForm livrosList={livrosList} setLivrosList={setLivrosList} setFresh={setFresh}/>
+			<BookList livrosList={livrosList} setLivrosList={setLivrosList} fresh={fresh}/>
 		</AppWrapper>
 	);
 }
