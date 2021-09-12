@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
 
 import BookRead from './BookRead'
 
-const BookForm = () => {
+const BookForm = (props) => {
   const [ title, setTitle ] = useState('')
   const [ author, setAuthor ] = useState('')
   const [ status, setStatus ] = useState('')
@@ -27,24 +28,32 @@ const BookForm = () => {
   }
 
   const dateFormat = (unDate = new Date) => {
-    return [unDate.getDate(), unDate.getMonth()+1, unDate.getFullYear()]
-      .map(n => n < 10 ? `0${n}` : `${n}`).join('/');
+    return [unDate.getFullYear(), unDate.getMonth()+1, unDate.getDate() ]
+      .map(n => n < 10 ? `0${n}` : `${n}`).join('-');
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
     //API VAI AQUI
     const Obj = {
-      title: title,
-      author: author,
-      status: status,
-      date: dateFormat()
+      titulo: title,
+      autor: author,
+      adicionado: dateFormat(),
+      status: status
     }
     if ( status === 2 ) {
-      Obj.rating = rating
-      Obj.conclusion = dateFormat(conclusion)
+      Obj.nota = rating
+      Obj.concluido = dateFormat(conclusion)
     }
     console.log(Obj)
+    axios.post('http://127.0.0.1:8000/api/booktrackerapi/', Obj)
+		.then(response => {
+			console.log(response.data)
+      props.setFresh(false);
+		})
+    .catch(error => {
+      console.log(error)
+    })
   }
   
   return (
@@ -56,6 +65,7 @@ const BookForm = () => {
         <input type='text' value={author} onChange={handleAuthorChange} required />
         <span>Status</span>
         <select value={status} onChange={handleStatusChange} required>
+          <option value=' ' disabled selected>Escolha o Status</option>
           <option value='0'> Quero Ler </option>
           <option value='1'> Lendo </option>
           <option value='2'> Lido </option>
@@ -92,7 +102,7 @@ const Form = styled.form`
   justify-content: center;
 
   > span {
-    color: #ffffff;
+
   }
 
   > input {
