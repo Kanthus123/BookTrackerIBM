@@ -21,41 +21,25 @@ function App() {
 	status: response.data.status
 	 */
 
-	const [livros, setLivros] = useState({})
+	const [livrosList, setLivros] = useState({})
     const [fresh,setFresh] = useState(false)
-
-	const getLivrosInfo = (event) => {
-        axios.get('http://localhost:8000/api/booktrackerapi/')
-        .then(response => {
-            console.log(response.data)
-        });
-    }
-
-	function editLivro(newLivro){
-		// muda o livro aqui
-	}
 
 	useEffect(() => {
         if (fresh === false){
             axios.get('http://localhost:8000/api/booktrackerapi/')
             .then(response => {
                 console.log(response.data)
-                for(var i = 0;i < response.data.length;i++){
-                    if(!response.data[i].concluido){
-                        response.data[i].concluido = "-----"
-                    }
-                }
                 setLivros(response.data)
                 setFresh(true);
             });
         }
-    },[]);
+    },[fresh]);
 
 
 	return (
 		<AppWrapper>
-			<BookForm setFresh={setFresh}/>
-			<BookList livros={livros} setLivros={setLivros} fresh={fresh} setFresh={setFresh} editLivro={editLivro} />
+			<BookForm livrosList={livrosList} setLivros={setLivros} setFresh={setFresh}/>
+			<BookList livrosList={livrosList} setLivros={setLivros} fresh={fresh} setFresh={setFresh} />
 		</AppWrapper>
 	);
 }
@@ -63,7 +47,8 @@ function App() {
 export default App;
 
 const AppWrapper = styled.div`
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,300);
-font-family: 'Roboto', sans-serif;
-background-color: #eeeeee;
+	@import url(https://fonts.googleapis.com/css?family=Roboto:400,300);
+	font-family: 'Roboto', sans-serif;
+	background-color: #eeeeee;
+	margin: 5vh 0;
 `

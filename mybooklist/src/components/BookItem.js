@@ -1,41 +1,65 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import BookApi from "../services/booktrackerapi"
 import styled from 'styled-components'
 
-const BookItem = (props) => {
+const BookItem = ({livro, livrosList, setLivros}) => {
     const [modo,setModo] = useState(true);
 
-    const handleSubmit = (event) => {
-        const id = event.toString();
-        console.log(id)
-        axios.delete('http://127.0.0.1:8000/api/booktrackerapi/' + id + "/")
+    const handleDelete = (id) => {
+        BookApi.deletar(id.toString())
         .then(response => {
-            console.log(response.data)
+            // mudar setLivros para setLivrosList
+            setLivros(livrosList.filter(n => n.id !== id))
+            console.log(response)
+            // response.status === 200 ? alert("Livro removido com sucesso!!") : ""
+        }).catch(error => {
+            alert("Erro ao remover livro!")
         })
+    }
+
+    const handleEdit = (event) => {
+        const id = event.toString();
+
+    }
+
+    const returnStatus = (status) => {
+        switch (status) {
+            case 0: 
+                return "Quero Ler" 
+                break;
+            case 1:
+                return "Lendo" 
+                break;
+            case 2:
+                return "Lido" 
+                break;                
+            default:
+                break;
+        }
     }
 
     if(modo) {
         return (
-            <Wrapper onClick={() => setModo(!modo)}>
-                    <h3>Livro: {props.livro.titulo}</h3> 
-                    <br/>
-                    <h4>Autor: {props.livro.autor}</h4>
-                    
+            <Wrapper >
+                    <h3>Livro: {livro.titulo}</h3> 
+                    <h4>Autor: {livro.autor}</h4>
+                    <button onClick={() => setModo(!modo)} type="submit">Expandir</button>
             </Wrapper>
         )
     } else {
         return (
-            <Wrapper onClick={() => setModo(!modo)}>
-                    <h3>Livro: {props.livro.titulo}</h3> 
-                    <br/>
-                    <b>ID: {props.livro.id}</b> <br/>
-                    <b>Autor: {props.livro.autor}</b> <br/>
-                    <b>Adicionado Em: {props.livro.adicionado}</b> <br/>
-                    <b>Concluido Em: {props.livro.concluido}</b> <br/>
-                    <b>Nota: {props.livro.nota}</b> <br/>
-                    <b>Status: {props.livro.status} </b><br/>
-                    <button onClick={() => handleSubmit(props.livro.id)} type="submit">Deletar</button>
-                    <button >Editar</button>
+            <Wrapper>
+                    <h3>Livro: {livro.titulo}</h3> 
+                    <Propriedade>ID: {livro.id}</Propriedade> 
+                    <Propriedade>Autor: {livro.autor}</Propriedade> 
+                    <Propriedade>Adicionado Em: {livro.adicionado}</Propriedade> 
+                    {livro.status === 2 ? <Propriedade>Concluido Em: {livro.concluido}</Propriedade>  : ""}
+                    {livro.status === 2 ? <Propriedade>Nota: {livro.nota}</Propriedade>   : ""}
+                    <Propriedade>Status: {returnStatus(Number(livro.status))} </Propriedade>
+                    <button onClick={() => setModo(!modo)} type="submit">Esconder</button>
+                    <button onClick={() => handleDelete(livro.id)} type="submit">Deletar</button>
+                    <button onClick={() => handleEdit(livro.id)} type="submit">Editar</button>
             </Wrapper>
         )
     };
@@ -45,7 +69,7 @@ const Wrapper = styled.div`
 	background-color: #fff;
 	border-radius: 4px;
     width: 100%;
-	margin: 0% auto;
+	margin: 10px;
 	position: relative;
 	padding: 34px;
 	color: #444;
@@ -55,14 +79,18 @@ const Wrapper = styled.div`
         background-color: #e7e7e7; 
         color: black;
         border: 10%;
-        padding: 5px 5px 5px 5px;
-        margin: 10px;
+        padding: 5px;
+        width: 100px;
+        margin: 10px 5px;
         text-align: center;
         text-decoration: none;
         display: inline-block;
         font-size: 16px;
       }
-
   `
+
+const Propriedade = styled.p`
+    font-weight: 700;
+`
 
 export default BookItem;

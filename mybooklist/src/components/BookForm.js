@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
+import BookApi from "../services/booktrackerapi"
 import styled from 'styled-components'
 import axios from 'axios'
 
 import BookRead from './BookRead'
 
-const BookForm = (props) => {
+const BookForm = ({livrosList, setLivros, setFresh}) => {
   const [ title, setTitle ] = useState('')
   const [ author, setAuthor ] = useState('')
-  const [ status, setStatus ] = useState('')
+  const [ status, setStatus ] = useState('0')
   const [ rating, setRating ] = useState(1)
   const [ conclusion, setConclusion ] = useState(new Date())
 
@@ -45,11 +46,11 @@ const BookForm = (props) => {
       Obj.nota = rating
       Obj.concluido = dateFormat(conclusion)
     }
-    console.log(Obj)
-    axios.post('http://127.0.0.1:8000/api/booktrackerapi/', Obj)
+    BookApi.create(Obj)
 		.then(response => {
-			console.log(response.data)
-      props.setFresh(false);
+      Obj.id = response.id
+      setLivros(livrosList.concat(Obj))
+			console.log(response)
 		})
     .catch(error => {
       console.log(error)
@@ -65,7 +66,6 @@ const BookForm = (props) => {
         <input type='text' value={author} onChange={handleAuthorChange} required />
         <span>Status</span>
         <select value={status} onChange={handleStatusChange} required>
-          <option value=' ' disabled selected>Escolha o Status</option>
           <option value='0'> Quero Ler </option>
           <option value='1'> Lendo </option>
           <option value='2'> Lido </option>
@@ -92,11 +92,11 @@ export default BookForm;
 
 const Wrapper = styled.div`
   display: flex;
+  justify-content: center;
   margin: 1rem;
 `
 
 const Form = styled.form`
-  width: 30%;
   display: flex;
   flex-direction: column;
   justify-content: center;
