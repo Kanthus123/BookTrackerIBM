@@ -9,7 +9,7 @@ const BookList = (props) => {
             <Wrapper>
                 <div>
                     {props.livros.map((livro) => 
-                     <BookItem livro={livro} editLivro={props.editLivro} />
+                     <BookItem livro={livro} editLivro={props.editLivro}/>
                     )}
                 </div>
             </Wrapper>
@@ -22,9 +22,7 @@ const BookList = (props) => {
                 </div>
             </Wrapper>
         )
-    }
-    
-    
+    }    
 }
 
 export default BookList;

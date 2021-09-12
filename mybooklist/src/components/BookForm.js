@@ -32,9 +32,9 @@ const BookForm = (props) => {
       .map(n => n < 10 ? `0${n}` : `${n}`).join('-');
   }
 
+  //POST 
   const handleSubmit = (event) => {
     event.preventDefault()
-    //API VAI AQUI
     const Obj = {
       titulo: title,
       autor: author,

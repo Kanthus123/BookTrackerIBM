@@ -10,7 +10,9 @@ import BookList from './components/BookList'
 
 function App() {
 	
-	/* 
+	/*
+	Campos do Banco
+	
 	titulo: response.data.titulo,
 	autor: response.data.autor,
 	adicionado: response.data.adicionado,
@@ -19,13 +21,21 @@ function App() {
 	status: response.data.status
 	 */
 
-	const [livrosLista,setLivrosLista] = useState()
-	const [livro,setLivro] =  useState()
 	const [livros, setLivros] = useState({})
-    const [isLoaded,setIsLoaded] = useState(false);
     const [fresh,setFresh] = useState(false)
 
-    useEffect(() => {
+	const getLivrosInfo = (event) => {
+        axios.get('http://localhost:8000/api/booktrackerapi/')
+        .then(response => {
+            console.log(response.data)
+        });
+    }
+
+	function editLivro(newLivro){
+		// muda o livro aqui
+	}
+
+	useEffect(() => {
         if (fresh === false){
             axios.get('http://localhost:8000/api/booktrackerapi/')
             .then(response => {
@@ -41,36 +51,6 @@ function App() {
         }
     },[]);
 
-
-	/* const livro = {titulo: response.data.titulo,
-		autor: response.data.autor,
-		adicionado: response.data.adicionado,
-		concluido: response.data.concluido,
-		nota: response.data.nota,
-		status: response.data.status
-		};
-
-	const setLivros = () => {
-		axios
-		.post('https://localhost:8000/api/booktrackerapi/', livro)
-		.then(response => {
-			setLivro(
-				{
-					livroId: response.data.id
-				})
-		})
-	} */
-
-	const getLivrosInfo = (event) => {
-        axios.get('http://localhost:8000/api/booktrackerapi/')
-        .then(response => {
-            console.log(response.data)
-        });
-    }
-
-	function editLivro(newLivro){
-		// muda o livro aqui
-	}
 
 	return (
 		<AppWrapper>
