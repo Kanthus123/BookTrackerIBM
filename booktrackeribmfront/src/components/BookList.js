@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from "react";
 import styled from 'styled-components'
 import BookItem from './BookItem'
 
-const BookList = ({livrosList, setLivrosList, fresh}) => {
+const BookList = ({booksList, setBooksList, fresh}) => {
 
     if(fresh) {
         return (
             <Wrapper>
-                {livrosList.map((livro) => 
+                {booksList.map((book) => 
                     <BookItem 
-                        key={livro.id}
-                        livro={livro} 
-                        livrosList={livrosList} 
-                        setLivrosList={setLivrosList} 
+                        key={book.id}
+                        book={book} 
+                        booksList={booksList} 
+                        setBooksList={setBooksList} 
                     />
                 )}
             </Wrapper>
@@ -20,7 +19,7 @@ const BookList = ({livrosList, setLivrosList, fresh}) => {
     } else {
         return (
             <Wrapper>
-                As Informações estão carregando ou não existem livros cadastrados!
+                As Informações estão carregando ou não existem books cadastrados!
             </Wrapper>
         )
     }    

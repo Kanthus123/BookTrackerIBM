@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import BookRead from './BookRead'
 
-const BookForm = ({livrosList, setLivrosList}) => {
+const BookForm = ({booksList, setBooksList}) => {
   const [ title, setTitle ] = useState('')
   const [ author, setAuthor ] = useState('')
   const [ status, setStatus ] = useState('0')
@@ -27,7 +27,7 @@ const BookForm = ({livrosList, setLivrosList}) => {
     setRating(Number(event.target.value))
   }
 
-  const dateFormat = (unDate = new Date) => {
+  const dateFormat = (unDate = new Date()) => {
     return [unDate.getFullYear(), unDate.getMonth()+1, unDate.getDate() ]
       .map(n => n < 10 ? `0${n}` : `${n}`).join('-');
   }
@@ -41,15 +41,16 @@ const BookForm = ({livrosList, setLivrosList}) => {
       adicionado: dateFormat(),
       status: status
     }
+
     if ( status === 2 ) {
       Obj.nota = rating
       Obj.concluido = dateFormat(conclusion)
     }
+
     BookApi.create(Obj)
 		.then(response => {
       Obj.id = response.id
-      setLivrosList(livrosList.concat(Obj))
-			console.log(response)
+      setBooksList(booksList.concat(Obj))
 		})
     .catch(error => {
       console.log(error)

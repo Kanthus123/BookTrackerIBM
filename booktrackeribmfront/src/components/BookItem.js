@@ -1,60 +1,99 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import BookApi from "../services/booktrackerapi"
+import BookRead from "./BookRead"
 import styled from 'styled-components'
 
-const BookItem = ({livro, livrosList, setLivrosList}) => {
-    const [modo,setModo] = useState(true);
+const BookItem = ({book, booksList, setBooksList}) => {
+    const [mode,setMode] = useState(true)
+    const [copyBook, setCopyBook] = useState(book)
+    const [conclusion, setConclusion] = useState()
+
+    useEffect(() => {
+        if(copyBook.concluido == null){
+            setConclusion(new Date())
+        } else {
+            setConclusion(dateUnformat(copyBook.concluido))
+        }
+    }, [])
+
+    const handleDateChange = (date) =>{
+        BookApi.update(book.id, {concluido: dateFormat(date)})
+		.then(response =>{
+            setConclusion(dateUnformat(response.concluido))
+            setCopyBook(response)  
+		})
+    }
 
     const handleDelete = (id) => {
-        BookApi.deletar(id.toString())
+        BookApi.remove(id.toString())
         .then(response => {
-            setLivrosList(livrosList.filter(n => n.id !== id))
-            console.log(response)
+            setBooksList(booksList.filter(n => n.id !== id))
         }).catch(error => {
             alert("Erro ao remover livro!")
         })
     }
 
-    const handleEdit = (event) => {
-        const id = event.toString();
-
+    const handleRatingChange = (event) => {
+        BookApi.update(book.id, {nota: event.target.value})
+		.then(response =>{
+            setCopyBook(response)  
+		})
     }
 
-    const returnStatus = (status) => {
-        switch (status) {
-            case 0: 
-                return "Quero Ler" 
-            case 1:
-                return "Lendo" 
-            case 2:
-                return "Lido" 
-            default:
-                break;
-        }
+    const handleStatusChange = (event) => {
+        BookApi.update(book.id, {status: event.target.value})
+		.then(response =>{			
+            setCopyBook(response)
+            
+		})    
     }
 
-    if(modo) {
+    const dateFormat = (unDate = new Date()) => {
+        return [unDate.getFullYear(), unDate.getMonth()+1, unDate.getDate() ]
+          .map(n => n < 10 ? `0${n}` : `${n}`).join('-');
+    }
+
+    const dateUnformat = (date) =>{
+        const dateParts = date.split("-")
+        return new Date(dateParts[0], dateParts[1]-1, dateParts[2])
+    }
+
+    if(mode) {
         return (
-            <Wrapper >
-                    <h3>Livro: {livro.titulo}</h3> 
-                    <h4>Autor: {livro.autor}</h4>
-                    <button onClick={() => setModo(!modo)} type="submit">Expandir</button>
+            <Wrapper>
+                    <h3>Título: {book.titulo}</h3> 
+                    <h4>Autor: {book.autor}</h4>
+                    <button onClick={() => setMode(!mode)} type="submit">Expandir</button>
             </Wrapper>
         )
     } else {
         return (
             <Wrapper>
-                    <h3>Livro: {livro.titulo}</h3> 
-                    <Propriedade>ID: {livro.id}</Propriedade> 
-                    <Propriedade>Autor: {livro.autor}</Propriedade> 
-                    <Propriedade>Adicionado Em: {livro.adicionado}</Propriedade> 
-                    {livro.status === 2 ? <Propriedade>Concluido Em: {livro.concluido}</Propriedade>  : ""}
-                    {livro.status === 2 ? <Propriedade>Nota: {livro.nota}</Propriedade>   : ""}
-                    <Propriedade>Status: {returnStatus(Number(livro.status))} </Propriedade>
-                    <button onClick={() => setModo(!modo)} type="submit">Esconder</button>
-                    <button onClick={() => handleDelete(livro.id)} type="submit">Deletar</button>
-                    <button onClick={() => handleEdit(livro.id)} type="submit">Editar</button>
+                <h3>Titulo: {book.titulo}</h3> 
+                <Propriedade>ID: {book.id}</Propriedade> 
+                <Propriedade>Autor: {book.autor}</Propriedade> 
+                <Propriedade>Adicionado Em: {book.adicionado}</Propriedade>
+                <Propriedade>Status: 
+                    <select value={copyBook.status} onChange={handleStatusChange}>
+                        <option value='0'> Quero Ler </option>
+                        <option value='1'> Lendo </option>
+                        <option value='2'> Lido </option>
+                    </select>
+                </Propriedade>
+                {
+                    copyBook.status === 2 
+                    ?
+                        <BookRead 
+                        rating={copyBook.nota} 
+                        conclusion={conclusion} 
+                        setRating={handleRatingChange} 
+                        setConclusion={handleDateChange} 
+                        /> 
+                    : 
+                        '' 
+                    }
+                <button onClick={() => setMode(!mode)} type="submit">Esconder</button>
+                <button onClick={() => handleDelete(book.id)} type="submit">Deletar</button>
             </Wrapper>
         )
     };
@@ -77,21 +116,13 @@ const Wrapper = styled.div`
         color: #ffffff;
         width: 120px;
         border: 1px solid #ffffff;
-      }
-  `
-/* > button {
-        background-color: #e7e7e7; 
-        color: black;
-        border: 10%;
-        padding: 5px;
-        width: 100px;
         margin: 10px 5px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-} */
+      }
 
+    > p {
+        font-weight: 700;
+    }
+  `
 
 const Propriedade = styled.p`
     font-weight: 700;

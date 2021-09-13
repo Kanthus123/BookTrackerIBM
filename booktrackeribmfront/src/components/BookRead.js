@@ -5,15 +5,15 @@ import 'react-datepicker/dist/react-datepicker.css'
 const BookRead = ({ rating, setRating, conclusion, setConclusion }) => {
   return (
     <>
-      <span>Nota</span>
+      <p>Nota: 
       <select value={rating} onChange={setRating} required>
         <option value='1'> 1 </option>
         <option value='2'> 2 </option>
         <option value='3'> 3 </option>
         <option value='4'> 4 </option>
         <option value='5'> 5 </option>
-      </select>
-      <span>Data de Conclusão</span>
+      </select></p>
+      <p>Concluido Em: </p>
       <DatePicker selected={conclusion} onChange={(date) => setConclusion(date)} required/>
     </>
   );
