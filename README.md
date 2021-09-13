@@ -18,11 +18,11 @@
 
 # Tecnologias Usadas
 
-FrontEnd
+Front-End
 - React
 - Javascript
 
-BackEnd
+Back-End
 - Sqlite3
 - Python
 - Django
@@ -37,7 +37,7 @@ BackEnd
 
 # Como Rodar O Projeto
 
-#### 1. Back-end 
+#### 1. Back-End 
 Caso desejar utilizar o VENV:
     
         .\venv\Scripts\activate na raiz do projeto
@@ -52,7 +52,7 @@ Ativar o servidor do back-end:
         # Dentro da raiz da pasta booktrackeribm
         python .\manage.py runserver
         
-#### 2. Front-end:
+#### 2. Front-End:
 
         # Na raiz da pasta booktrackeribmfront
         npm install
