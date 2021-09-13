@@ -4,7 +4,8 @@
 ---
 1. O App web foi dividido em 2 partes dentro da pasta BookTrackerIBM :
 
-        BooktrackerIbm -> É uma API do Backend que cuida da estrutura do Banco e rotas das requisições HTTP agindo como Middleware.
+        BooktrackerIbm -> É uma API do Backend que cuida da estrutura do Banco e  
+		rotas das requisições HTTP agindo como Middleware.
 
         BookTrackerIbmFront -> Inferface do APP, Requisições HTTP de CRUD pro banco.
 
