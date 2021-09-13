@@ -1,0 +1,7 @@
+{
+    "secret":{
+        "SECRET_KEY": "django-insecure-$q8pklz@-5bg_25#kbg@mt2xe$^07qa2!_i*3z%4v6)6m1v07k",
+        "DEBUG":true
+    }
+}
+

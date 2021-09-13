@@ -4,10 +4,13 @@ import BookRead from "./BookRead"
 import styled from 'styled-components'
 
 const BookItem = ({book, booksList, setBooksList}) => {
-    const [mode,setMode] = useState(true)
+    
+    // Flag dos botões Mostrar e Esconder
+    const [mode, setMode] = useState(true)
     const [copyBook, setCopyBook] = useState(book)
     const [conclusion, setConclusion] = useState()
 
+    //UseEffect para permitir alteração no campo com a data de conclusão do livro
     useEffect(() => {
         if(copyBook.concluido == null){
             setConclusion(new Date())

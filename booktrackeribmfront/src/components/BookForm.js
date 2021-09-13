@@ -32,7 +32,7 @@ const BookForm = ({booksList, setBooksList}) => {
       .map(n => n < 10 ? `0${n}` : `${n}`).join('-');
   }
 
-  //POST 
+  //Função para realizar o POST
   const handleSubmit = (event) => {
     event.preventDefault()
     const Obj = {
@@ -60,10 +60,10 @@ const BookForm = ({booksList, setBooksList}) => {
   return (
     <Wrapper>
       <Form>
-        <span>Título do Livro</span>
-        <input type='text' value={title} onChange={handleTitleChange} required />
+        <span >Título do Livro</span>
+        <input data-testid="input-titulo" type='text' value={title} onChange={handleTitleChange} required />
         <span>Nome do Autor</span>
-        <input type='text' value={author} onChange={handleAuthorChange} required />
+        <input data-testid="input-autor" type='text' value={author} onChange={handleAuthorChange} required />
         <span>Status</span>
         <select value={status} onChange={handleStatusChange} required>
           <option value='0'> Quero Ler </option>
@@ -82,7 +82,7 @@ const BookForm = ({booksList, setBooksList}) => {
         : 
           '' 
         }
-        <button onClick={handleSubmit} type="submit">Enviar</button>
+        <button data-testid="submit-btn" onClick={handleSubmit} type="submit">Enviar</button>
       </Form>
     </Wrapper>
   );

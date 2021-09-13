@@ -11,7 +11,8 @@ import BookList from './components/BookList'
 function App() {
 
 	const [booksList, setBooksList] = useState({})
-    const [fresh,setFresh] = useState(false)
+	// Mantem página atualizada após requisições HTTP
+    const [fresh, setFresh] = useState(false)
 
 	useEffect(() => {
         if (fresh === false){

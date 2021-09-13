@@ -3,6 +3,7 @@ import BookItem from './BookItem'
 
 const BookList = ({booksList, setBooksList, fresh}) => {
 
+    //Fresh True = Mostar Livros   Fresh False = Mensagem de Espera/Banco Vazio
     if(fresh) {
         return (
             <Wrapper>
@@ -19,7 +20,7 @@ const BookList = ({booksList, setBooksList, fresh}) => {
     } else {
         return (
             <Wrapper>
-                As Informações estão carregando ou não existem books cadastrados!
+                As Informações estão carregando ou não existem livros cadastrados!
             </Wrapper>
         )
     }    
